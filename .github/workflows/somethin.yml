@@ -1,0 +1,46 @@
+name: Release Plugin
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Trigger on version tags like v1.0.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: '21'  # Set to your required Java version
+
+    - name: Build with Gradle
+      run: ./gradlew build  # Adjust if using a different build tool
+
+    - name: Get version number
+      id: get_version
+      run: echo "VERSION=$(cat build.gradle | grep 'version:' | cut -d' ' -f2 | tr -d '[:space:]')" >> $GITHUB_ENV
+
+    - name: Create Release
+      id: create_release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ env.VERSION }}
+        body: |
+          Changes in this release:
+          - Insert changes here
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload JAR file
+      uses: softprops/action-gh-release@v1
+      with:
+        files: build/libs/${{ env.VERSION }}.jar  # Adjust for your output path
+        tag: ${{ github.ref }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
